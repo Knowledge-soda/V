@@ -1,0 +1,42 @@
+-1::
+  BLN(ID):
+    BLN(PRNT):
+      VAR(4):
+        NUM(5), BLN(NOP),
+      BLN(NOP),
+    BLN(NOP),
+
+2::
+  BLN(MOV):
+    VAL(0), COM, BLN(SUM):
+      BLN(VAL):
+        VAL(0), BLN(NOP),
+      COM, NUM(-1), BLN(NOP),
+    BLN(NOP),
+
+3::
+  BLN(MOV):
+    VAL(0), COM, BLN(SUM):
+      BLN(VAL):
+        VAL(0), BLN(NOP),
+      COM, VAL(1), BLN(NOP),
+    BLN(NOP),
+
+4::
+  BLN(VAL):
+    BLN(MOV):
+      VAR(1), COM, VAL(0), BLN(NOP),
+    BLN(MOV):
+      VAR(0), COM, NUM(0), BLN(NOP),
+    PLC(5), VAR(3):
+      VAR(0), COM, BLN(VAL):
+        VAR(1), BLN(NOP),
+      BLN(NOP),
+    VAR(2):
+      VAR(1), BLN(NOP),
+    BLN(IJMP):
+      BLN(VAL):
+        VAR(1), BLN(NOP),
+      COM, VAR(5), BLN(NOP),
+    VAR(0), BLN(NOP),
+

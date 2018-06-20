@@ -1,0 +1,5 @@
+:a, b
+--(var) := =(var, +(v(var), -1))
+++(var) := =(var, +(v(var), 1))
++=(var, n) := =(var, +(v(var), n))
+sum(x) := v(=(b, 0) =(a, 0) rep: ++(b) +=(a, v(b)) ijmp(<(v(b), x), rep) a)

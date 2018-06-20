@@ -1,0 +1,5 @@
+f(x, y) := *(x, +(x, y))
+:a, c
+=(c, read())
+=(a, v(c))
+print(f(v(a), v(c)))

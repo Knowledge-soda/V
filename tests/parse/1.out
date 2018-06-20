@@ -1,0 +1,10 @@
+-1::
+  BLN(ID):
+    BLN(SUM):
+      NUM(2), COM, BLN(MUL):
+        NUM(3), COM, BLN(SUM):
+          NUM(8), COM, NUM(3), BLN(NOP),
+        BLN(NOP),
+      BLN(NOP),
+    BLN(NOP),
+

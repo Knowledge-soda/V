@@ -1,0 +1,9 @@
+*
+!/**/
+!*.*
+!LICENSE
+!makefile
+*.o
+.*
+!.gitignore
+*.out

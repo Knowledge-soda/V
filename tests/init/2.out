@@ -1,0 +1,4 @@
+_start:
+    NAME(id) BEGIN NAME(+) BEGIN NAME(a) SEP NAME(b) END END
+f:
+    BEGIN NAME(x) SEP NAME(y) END : NAME(*) BEGIN NAME(x) SEP NAME(y) END
