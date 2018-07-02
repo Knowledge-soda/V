@@ -10,7 +10,7 @@
 #define HS_SPC (2)
 
 #define BL_NOP  (0)
-#define BL_ID   (1)
+#define BL_LAST (1)
 #define BL_SUM  (2)
 #define BL_MUL  (3)
 #define BL_VAL  (4)
@@ -32,6 +32,7 @@
 #define BL_STR  (20)
 #define BL_IFC  (21)
 #define BL_CALL (22)
+#define BL_PRNR (23)
 
 
 typedef struct line {

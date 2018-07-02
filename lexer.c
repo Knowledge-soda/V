@@ -82,9 +82,9 @@ int atomise_line(char *line, Atom *first){
             } else {
                 first -> type = AT_STR;
                 name[j] = '\0';
-                j = 0;
                 first -> str = malloc(sizeof(char) * (j + 1));
                 strcpy(first -> str, name);
+                j = 0;
                 first -> next = malloc(sizeof(Atom));
                 first = first -> next;
                 str = 0;

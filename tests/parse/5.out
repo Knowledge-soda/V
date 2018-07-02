@@ -1,5 +1,5 @@
 -1::
-  BLN(ID):
+  BLN(NOP):
     BLN(STR):
       VAR(0),
     BLN(NOP),

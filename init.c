@@ -14,8 +14,8 @@ static void *aloc_int(int n){
 }
 
 static int init_built_in(HashTable *table){
-    insert_node("_", HS_SPC, aloc_int(BL_NOP), table);
-    insert_node("id", HS_SPC, aloc_int(BL_ID), table);
+    insert_node("id", HS_SPC, aloc_int(BL_NOP), table);
+    insert_node("_", HS_SPC, aloc_int(BL_LAST), table);
     insert_node("+", HS_SPC, aloc_int(BL_SUM), table);
     insert_node("*", HS_SPC, aloc_int(BL_MUL), table);
     insert_node("v", HS_SPC, aloc_int(BL_VAL), table);
@@ -36,6 +36,7 @@ static int init_built_in(HashTable *table){
     insert_node("jmp", HS_SPC, aloc_int(BL_JMP), table);
     insert_node("ifc", HS_SPC, aloc_int(BL_IFC), table);
     insert_node("call", HS_SPC, aloc_int(BL_CALL), table);
+    insert_node("printr", HS_SPC, aloc_int(BL_PRNR), table);
 
     insert_node("_start", HS_VAR, aloc_int(-1), table);
     return NO_ERROR;

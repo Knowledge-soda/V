@@ -29,11 +29,15 @@ static int compile_node_type(ParserNode *node){
     if (t == PS_COM){
         printf("push dword eax\n");
     }
+    if (t == PS_BLN && node -> name == BL_LAST){
+        printf("mov eax, edi\n");
+    }
     return NO_ERROR;
 }
 
 static int compile_built_in(int type, int node_size){
-    if (type == BL_NOP || type == BL_ID){
+    if (type == BL_NOP){
+    } else if (type == BL_LAST){
     } else if (type == BL_SUM){
         printf("mov eax, [ebp - 4]\n");
         printf("add eax, [ebp - 8]\n");
@@ -75,15 +79,19 @@ static int compile_built_in(int type, int node_size){
         printf("mov ecx, %i\n", node_size * 4);
         printf("jmp [ebp - 8]\n");
     } else if (type == BL_PRNT){
+        printf("pusha\n");
         printf("push dword [ebp - 4]\n");
         printf("push prINT\n");
         printf("call printf\n");
         printf("add esp, 8\n");
+        printf("popa\n");
     } else if (type == BL_LOAD){
+        printf("pusha\n");
         printf("push dword [ebp - 4]\n");
         printf("push scINT\n");
         printf("call scanf\n");
         printf("add esp, 8\n");
+        printf("popa\n");
     } else if (type == BL_NOT){
         printf("xor eax, eax\n");
         printf("cmp dword [ebp - 4], 0\n");
@@ -135,6 +143,13 @@ static int compile_built_in(int type, int node_size){
         printf("mov ebx, esp\n");
         printf("call dword [ebp]\n");
         printf("add ebp, 4\n");
+    } else if (type == BL_PRNR){
+        printf("pusha\n");
+        printf("push dword [ebp - 4]\n");
+        printf("push prINTR\n");
+        printf("call printf\n");
+        printf("add esp, 8\n");
+        printf("popa\n");
     } else {
         return UNDEF_ERROR;
     }
@@ -151,6 +166,7 @@ static int compile_node_func(ParserNode *node){
     } else {
         printf("call eax\n");
     }
+    printf("mov edi, eax\n");
     printf("pop ebp\n");
     printf("add esp, %i\n", 4 * (node -> size));
     printf("mov ebx, esp\n");
@@ -228,6 +244,7 @@ int compile_file(ParserFile *file){
 
     printf("section .data\n");
     printf("prINT db \"%%i\", 10, 0\n");
+    printf("prINTR db \"%%i\", 0\n");
     printf("scINT db \"%%i\", 0\n");
     printf("prSTR db '%%s', 0\n");
     int i;
@@ -236,8 +253,9 @@ int compile_file(ParserFile *file){
         printf("$%s dd 0\n", tmp_name);
     }
     for (i = 0;i < file -> str_size;i++){
+        printf(";%i\n", (file -> str_vals)[i]);
         num_name((file -> str_vals)[i], tmp_name);
-        printf("$%s db `%s`\n", tmp_name, (file -> strings)[i]);
+        printf("$%s db `%s`, 0\n", tmp_name, (file -> strings)[i]);
     }
 
     return NO_ERROR;

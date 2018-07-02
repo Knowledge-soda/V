@@ -39,9 +39,9 @@ static int add_str(File *file, int n, char *str){
     (file -> str_size)++;
     if (file -> str_size == file -> str_max_size){
         (file -> str_max_size) *= 2;
-        file -> strings = realloc(file -> strings, file -> str_max_size);
+        file -> strings = realloc(file -> strings, sizeof(char*) * (file -> str_max_size));
         if (!file -> strings) return MEMORY_ERROR;
-        file -> str_vals = realloc(file -> str_vals, file -> str_max_size);
+        file -> str_vals = realloc(file -> str_vals, sizeof(int) * (file -> str_max_size));
         if (!file -> str_vals) return MEMORY_ERROR;
     }
     return NO_ERROR;
@@ -51,8 +51,8 @@ const char *built_in_name(int n){
     if (n == BL_NOP){
         return "NOP";
     }
-    if (n == BL_ID){
-        return "ID";
+    if (n == BL_LAST){
+        return "LAST";
     }
     if (n == BL_SUM){
         return "SUM";
@@ -180,7 +180,7 @@ int parse_line(Atom *atom, Node *first, HashTable *table){
         }
         if (atom -> type == AT_NAME){
             tmp = get_node(atom -> str, table);
-    //        printf(":::%s\n", atom -> str);
+    //      printf(":::%s\n", atom -> str);
             if (!tmp) return EXIST_ERROR;
     //        printf(":::%s(%i)\n", atom -> str, tmp -> type);
             if (tmp -> type == HS_VAR) set_type(first, PS_VAR);
@@ -262,6 +262,7 @@ int parse_file(InitData *data, File *file){
     file -> str_size = 0;
     for (line = data -> first;line;line = line -> next){
         read = get_node(line -> name, data -> table);
+    //  printf("%s\n", line -> name);
         if (!read) return EXIST_ERROR;
         curr -> name = *((int*)(read -> data));
         curr -> first = malloc(sizeof(ParserNode));
@@ -289,6 +290,7 @@ int parse_file(InitData *data, File *file){
     }
     file -> data = data -> allocs;
     file -> data_size = data -> alloc_num;
+
 
     return NO_ERROR;
 }

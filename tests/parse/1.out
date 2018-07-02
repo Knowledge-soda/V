@@ -1,5 +1,5 @@
 -1::
-  BLN(ID):
+  BLN(NOP):
     BLN(SUM):
       NUM(2), COM, BLN(MUL):
         NUM(3), COM, BLN(SUM):

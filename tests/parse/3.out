@@ -1,5 +1,5 @@
 -1::
-  BLN(ID):
+  BLN(NOP):
     BLN(PRNT):
       VAR(4):
         NUM(5), BLN(NOP),
