@@ -37,6 +37,7 @@ static int init_built_in(HashTable *table){
     insert_node("ifc", HS_SPC, aloc_int(BL_IFC), table);
     insert_node("call", HS_SPC, aloc_int(BL_CALL), table);
     insert_node("printr", HS_SPC, aloc_int(BL_PRNR), table);
+    insert_node("ifec", HS_SPC, aloc_int(BL_IFEC), table);
 
     insert_node("_start", HS_VAR, aloc_int(-1), table);
     return NO_ERROR;

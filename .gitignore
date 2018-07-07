@@ -8,3 +8,4 @@
 !.gitignore
 !.gitattributes
 *.out
+!tests/*/*.out

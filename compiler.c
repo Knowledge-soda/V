@@ -150,6 +150,19 @@ static int compile_built_in(int type, int node_size){
         printf("call printf\n");
         printf("add esp, 8\n");
         printf("popa\n");
+    } else if (type == BL_IFEC){
+        printf("xor eax, eax\n");
+        printf("xor ecx, ecx\n");
+        printf("cmp dword [ebp - 4], 0\n");
+        printf("sete cl\n");
+        printf("setne al\n");
+        printf("imul eax, [ebp - 8]\n");
+        printf("imul ecx, [ebp - 12]\n");
+        printf("add eax, ecx\n");
+        printf("sub ebp, 12\n");
+        printf("mov ebx, esp\n");
+        printf("call dword eax\n");
+        printf("add ebp, 12\n");
     } else {
         return UNDEF_ERROR;
     }
