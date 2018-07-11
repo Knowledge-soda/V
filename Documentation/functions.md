@@ -21,5 +21,6 @@
 | `not` | 1 condition | negation | |
 | `call` | function and its arguments | whatever function outputs | calls function with arguments |
 | `ifc` | condition, function and its arguments | | calls function if condition is true |
+| `ifec` | condition, 2 functions and their arguments | | calls first function if condition is true, second otherwise |
 | `jmp` | place | | [obsolete](obsolete.md) |
 | `ijmp` | condition and place | | [obsolete](obsolete.md) |

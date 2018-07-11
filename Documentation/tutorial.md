@@ -180,6 +180,31 @@ Now when we know all this we can define out function even more easily:
         !, -(n, 1), /* call ! with arguments n - 1 */
     1)) /* else return 1 */
 
+Function `ifec` is a combination of `if` and `call`.
+
+Anonymous functions
+-------------------
+
+After using `ifc` and `ifec` a lot, defining new function every time becomes a annoying.
+There is a solution for that: anonymous functions (also called lambda functions).
+
+To define a lambda function use curly brackets (`{` & `}`).
+Function arguments go before ` := ` and function body comes after.
+If there are no arguments ` := ` may be omitted.
+
+    gcd(a, b) := ifc(b, /* if b isn't zero */
+        {a, b := gcd(b, %(a, b))}, /* call gcd */
+        a, b, /* with arguments a and b */
+        a) /* otherwise return a */
+
+
+    sum() := ifc(v(load(ans)), /* if loaded number is not zero */
+        {+(v(ans), sum())}, /* add it to a sum */
+        0) /* else return 0
+        This will return sum of zero terminated number sequence */
+
+While this notation might seem similar to C-blocks it's different -
+**you can't reference outer arguments** within anonymous function.
 
 Hello world
 -----------
