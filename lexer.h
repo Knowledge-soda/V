@@ -13,6 +13,8 @@
 #define AT_DECLARE (7) // : at the beginning
 #define AT_EOL (8) // end of effective line
 #define AT_STR (9)
+#define AT_SUB_BEG (10) // {
+#define AT_SUB_END (11) // }
 
 typedef struct atom {
     struct atom *next;
@@ -21,6 +23,7 @@ typedef struct atom {
     char *str;
 } Atom;
 
+void print_atom(Atom *atom);
 int atomise_line(char *line, Atom *first);
 
 #endif

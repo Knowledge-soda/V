@@ -108,8 +108,14 @@ const char *built_in_name(int n){
     if (n == BL_JMP){
         return "JMP";
     }
+    if (n == BL_IFC){
+        return "IFC";
+    }
     if (n == BL_STR){
         return "STR";
+    }
+    if (n == BL_IFEC){
+        return "IFEC";
     }
     return "UNDEFINED";
 }
@@ -149,6 +155,10 @@ static int argumentise(Atom *first, HashTable *table){
 
 static int analyse(Atom *first, File *file, InitData *data){
     int err;
+    Atom *starts[MAXLAMBDADEPTH], *mids[MAXLAMBDADEPTH];
+    Atom *prev, *tmp;
+    int sub = 0;
+    Line *new;
     while (first){
         if (first -> type == AT_PLACE){
             err = insert_tmp_node(first -> str, HS_VAR,
@@ -163,6 +173,43 @@ static int analyse(Atom *first, File *file, InitData *data){
             if (err) return err;
             (data -> var_num)++;
         }
+        if (first -> type == AT_SUB_BEG){
+            starts[sub] = first;
+            mids[sub] = NULL;
+            sub++;
+        }
+        if (first -> type == AT_DEF){
+            mids[sub - 1] = first;
+        }
+        if (first -> type == AT_SUB_END){
+            sub--;
+            new = malloc(sizeof(Line));
+            if (!new) return MEMORY_ERROR;
+            starts[sub] -> value = data -> var_num;
+            tmp = malloc(sizeof(Atom));
+            tmp -> type = AT_BEGIN;
+            if (mids[sub]){
+                tmp -> next = starts[sub] -> next;
+            } else {
+                mids[sub] = malloc(sizeof(Atom));
+                mids[sub] -> type = AT_END;
+                mids[sub] -> next = starts[sub] -> next;
+                tmp -> next = mids[sub];
+            }
+            new -> name = NULL;
+            new -> num = data -> var_num;
+            new -> arg_first = tmp;
+            new -> first = mids[sub] -> next;
+            mids[sub] -> type = AT_END;
+            new -> last = prev;
+            prev -> next = NULL;
+            new -> next = NULL;
+            data -> last -> next = new;
+            data -> last = new;
+            (data -> var_num)++;
+            starts[sub] -> next = first -> next;
+        }
+        prev = first;
         first = first -> next;
     }
     return NO_ERROR;
@@ -173,20 +220,21 @@ int parse_line(Atom *atom, Node *first, HashTable *table){
     Node *stack[MAXDEPTH];
     int stack_size = 0;
     while (atom){
-    //    printf("cl(%i)\n", atom -> type);
         if (atom -> type == AT_NUM){
             set_type(first, PS_NUM);
             first -> name = atom -> value;
         }
         if (atom -> type == AT_NAME){
             tmp = get_node(atom -> str, table);
-    //      printf(":::%s\n", atom -> str);
             if (!tmp) return EXIST_ERROR;
-    //        printf(":::%s(%i)\n", atom -> str, tmp -> type);
             if (tmp -> type == HS_VAR) set_type(first, PS_VAR);
             if (tmp -> type == HS_VAL) set_type(first, PS_VAL);
             if (tmp -> type == HS_SPC) set_type(first, PS_BLN);
             first -> name = *((int*)(tmp -> data));
+        }
+        if (atom -> type == AT_SUB_BEG){
+            set_type(first, PS_VAR);
+            first -> name = atom -> value;
         }
         if (atom -> type == AT_PLACE){
             set_type(first, PS_PLC);
@@ -216,27 +264,19 @@ int parse_line(Atom *atom, Node *first, HashTable *table){
             set_func(first);
             first -> size = 1;
             stack[stack_size] = first;
-    //        printf("(stack:%i@%i\n", first -> name, get_type(first));
             stack_size++;
             first -> next = malloc(sizeof(Node));
             first -> first = malloc(sizeof(Node));
             first = first -> first;
             atom = atom -> next;
         } else if (atom -> type == AT_END){
-    //        printf("END\n");
             set_type(first, PS_BLN);
-    //        printf(".0\n");
             first -> name = BL_NOP;
-    //        printf(".1\n");
             stack_size--;
             stack[stack_size] -> last = first;
             first -> next = NULL;
-    //        printf(".2\n");
             first = stack[stack_size] -> next;
-    //        printf(")stack:%i@%i\n", stack[stack_size] -> name, get_type(stack[stack_size]));
-    //        printf("sz = %i\n", stack_size);
         } else {
-    //        printf("NORMAL\n");
             first -> next = malloc(sizeof(Node));
             first = first -> next;
         }
@@ -261,22 +301,22 @@ int parse_file(InitData *data, File *file){
     file -> str_vals = malloc(sizeof(int) * 16);
     file -> str_size = 0;
     for (line = data -> first;line;line = line -> next){
-        read = get_node(line -> name, data -> table);
-    //  printf("%s\n", line -> name);
-        if (!read) return EXIST_ERROR;
-        curr -> name = *((int*)(read -> data));
+        if (line -> name){
+            read = get_node(line -> name, data -> table);
+            if (!read) return EXIST_ERROR;
+            curr -> name = *((int*)(read -> data));
+        } else {
+            curr -> name = line -> num;
+        }
         curr -> first = malloc(sizeof(ParserNode));
 
         start_tmp_session(data -> table);
-    //    printf("ARG\n");
         if (line -> arg_first){
             err = argumentise(line -> arg_first, data -> table);
             if (err) return err;
         }
-    //    printf("ANA\n");
         err = analyse(line -> first, file, data);
         if (err) return err;
-    //    printf("PLN\n");
         err = parse_line(line -> first, curr -> first, data -> table);
         if (err) return err;
         end_tmp_session(data -> table);
@@ -290,7 +330,6 @@ int parse_file(InitData *data, File *file){
     }
     file -> data = data -> allocs;
     file -> data_size = data -> alloc_num;
-
 
     return NO_ERROR;
 }

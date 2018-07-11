@@ -11,18 +11,24 @@ info()
 load(ans)
 ifc(invalid(ans), repeat)
 
-fib'(a, b, n) := ifc(n, fib', b, +(a, b), -(n, 1), +(a, b))
+fib'(a, b, n) := ifec(n, {a, b, n := 
+        fib'(b, +(a, b), -(n, 1))
+    }, {a, b, n := 
+        +(a, b)
+    }, a, b, n)
 fib(n) := ifc(>(n, 2), fib', 1, 1, -(n, 3), 1)
-fib prog() := print("Enter number: " load(ans) fib(v(ans)))
 
-sum() := +(v(load(ans)), ifc(v(ans), sum, 0))
-sum prog() := print("Enter summands.\nUse 0 to terminate.\n" sum())
+sum() := ifc(v(load(ans)), {+(v(ans), sum())}, 0)
 
-gcd(a, b) := ifc(b, gcd, b, %(a, if(b, b, 1)), a)
-gcd prog() := print("Enter first number: " load(ans)
-                    "Enter second number: " load(v2)
-                    gcd(v(ans), v(v2)))
+gcd(a, b) := ifc(b, {a, b := gcd(b, %(a, b))}, a, b, a)
 
-ifc(==(v(ans), 1), fib prog)
-ifc(==(v(ans), 2), sum prog)
-ifc(==(v(ans), 3), gcd prog)
+ifec(==(v(ans), 1), {
+    print("Enter number: " load(ans) fib(v(ans)))
+}, {
+    ifec(==(v(ans), 2), {
+        print("Enter summands.\nUse 0 to terminate.\n" sum())
+    }, {
+        print("Enter first number: " load(ans)
+              "Enter second number: " load(v2)
+              gcd(v(ans), v(v2)))
+})})

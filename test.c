@@ -11,30 +11,6 @@
 #define MAXLINE 10000
 #define MAXVARS 10000
 
-void print_atom(Atom *atom){
-    if (atom -> type == AT_NUM){
-        printf("NUM(%i)", atom -> value);
-    } else if (atom -> type == AT_NAME){
-        printf("NAME(%s)", atom -> str);
-    } else if (atom -> type == AT_PLACE){
-        printf("PLACE(%s)", atom -> str);
-    } else if (atom -> type == AT_BEGIN){
-        printf("BEGIN");
-    } else if (atom -> type == AT_SEP){
-        printf("SEP");
-    } else if (atom -> type == AT_END){
-        printf("END");
-    } else if (atom -> type == AT_DEF){
-        printf("DEF");
-    } else if (atom -> type == AT_DECLARE){
-        printf("DECLARE");
-    } else if (atom -> type == AT_EOL){
-        printf("EOL");
-    } else if (atom -> type == AT_STR){
-        printf("STR(%s)", atom -> str);
-    }
-}
-
 void print_pnode(ParserNode *node, int inden){
     int i;
     ParserNode *tmp;

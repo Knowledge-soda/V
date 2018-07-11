@@ -119,12 +119,15 @@ static int init_line(Data *data, Atom *first){
         return NO_ERROR;
     }
 
-    while (node -> next -> type != AT_DEF){
+    int sub = 0;
+    while (sub || node -> next -> type != AT_DEF){
         if (node -> next -> type == AT_EOL){
             data -> first -> last -> next = first;
             data -> first -> last = node;
             return NO_ERROR;
         }
+        if (node -> type == AT_SUB_BEG) sub++;
+        if (node -> type == AT_SUB_END) sub--;
         node = node -> next;
     }
     prev = node;

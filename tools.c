@@ -94,6 +94,7 @@ void num_name(int n, char *str){
 
 int get_real_line(char *line, int line_size){
     int paren = 0, comment = 0, i = 0, j = 0;
+    char parens[MAXPARENS];
     while (1){
         if (!get_line(line + j, line_size - j)){
             if (paren || comment) return EOF_EARLY_ERROR;
@@ -106,11 +107,19 @@ int get_real_line(char *line, int line_size){
                 comment++;
             }
             if (!comment){
-                if (line[i] == '('){
+                if (line[i] == '(' || line[i] == '{'){
+                    parens[paren] = line[i];
                     paren++;
                 }
                 if (line[i] == ')'){
                     paren--;
+                    if (paren < 0) return PAREN_CLOSE_ERROR;
+                    if (parens[paren] != '(') return ORDER_ERROR;
+                }
+                if (line[i] == '}'){
+                    paren--;
+                    if (paren < 0) return PAREN_CLOSE_ERROR;
+                    if (parens[paren] != '{') return ORDER_ERROR;
                 }
                 line[j] = line[i];
                 j++;
@@ -168,5 +177,8 @@ void print_error(int err){
     }
     if (err == UNDEF_ERROR){
         fprintf(stderr, "ERROR: built-in function not defined!\n");
+    }
+    if (err == ORDER_ERROR){
+        fprintf(stderr, "ERROR: closing parenthesis don't match!\n");
     }
 }

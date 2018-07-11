@@ -4,6 +4,8 @@
 typedef unsigned char byte;
 
 #define MAXDEPTH (200)
+#define MAXLAMBDADEPTH (16)
+#define MAXPARENS (300)
 
 #define NO_ERROR (0)
 #define NAME_ERROR (1)
@@ -18,5 +20,6 @@ typedef unsigned char byte;
 #define EXIST_ERROR (10)
 #define NO_NAME_ERROR (11)
 #define UNDEF_ERROR (12)
+#define ORDER_ERROR (13)
 
 #endif

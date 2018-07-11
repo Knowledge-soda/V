@@ -38,6 +38,7 @@
 
 typedef struct line {
     char *name;
+    int num;
     Atom *first, *last, *arg_first;
     struct line *next;
 } Line;

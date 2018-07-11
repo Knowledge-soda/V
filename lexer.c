@@ -23,7 +23,36 @@ static int atom_type(char *name){
 
 static int is_key(char *str){
     return (*str == '(' || *str == ')' || *str == '"' ||
-            *str == ',' || is_dec(str) || is_def(str));
+            *str == ',' || *str == '{' || *str == '}' ||
+            is_dec(str) || is_def(str));
+}
+
+void print_atom(Atom *atom){
+    if (atom -> type == AT_NUM){
+        printf("NUM(%i)", atom -> value);
+    } else if (atom -> type == AT_NAME){
+        printf("NAME(%s)", atom -> str);
+    } else if (atom -> type == AT_PLACE){
+        printf("PLACE(%s)", atom -> str);
+    } else if (atom -> type == AT_BEGIN){
+        printf("BEGIN");
+    } else if (atom -> type == AT_SEP){
+        printf("SEP");
+    } else if (atom -> type == AT_END){
+        printf("END");
+    } else if (atom -> type == AT_DEF){
+        printf("DEF");
+    } else if (atom -> type == AT_DECLARE){
+        printf("DECLARE");
+    } else if (atom -> type == AT_EOL){
+        printf("EOL");
+    } else if (atom -> type == AT_STR){
+        printf("STR(%s)", atom -> str);
+    } else if (atom -> type == AT_SUB_BEG){
+        printf("SUB_BEG");
+    } else if (atom -> type == AT_SUB_END){
+        printf("SUB_END");
+    }
 }
 
 int atomise_line(char *line, Atom *first){
@@ -66,6 +95,10 @@ int atomise_line(char *line, Atom *first){
                 str = 1;
             } else if (line[i] == ','){
                 first -> type = AT_SEP;
+            } else if (line[i] == '{'){
+                first -> type = AT_SUB_BEG;
+            } else if (line[i] == '}'){
+                first -> type = AT_SUB_END;
             } else {
                 printf("line = '%s'\n", line);
                 printf("T=%i, s=%c, i=%i\n", first -> type, line[i], i);
