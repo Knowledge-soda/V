@@ -261,14 +261,15 @@ int compile_file(ParserFile *file){
     printf("scINT db \"%%i\", 0\n");
     printf("prSTR db '%%s', 0\n");
     int i;
-    for (i = 0;i < file -> data_size;i++){
-        num_name((file -> data)[i], tmp_name);
-        printf("$%s dd 0\n", tmp_name);
-    }
     for (i = 0;i < file -> str_size;i++){
         printf(";%i\n", (file -> str_vals)[i]);
         num_name((file -> str_vals)[i], tmp_name);
         printf("$%s db `%s`, 0\n", tmp_name, (file -> strings)[i]);
+    }
+    printf("section .bss\n");
+    for (i = 0;i < file -> data_size;i++){
+        num_name((file -> data)[i], tmp_name);
+        printf("$%s resd %i\n", tmp_name, (file -> sizes)[i]);
     }
 
     return NO_ERROR;

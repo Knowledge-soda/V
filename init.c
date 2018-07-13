@@ -74,18 +74,23 @@ static int init_data(Data *data){
     data -> max_alloc_num = 16;
     data -> allocs = malloc(sizeof(int) * 16);
     if (!data -> allocs) return MEMORY_ERROR;
+    data -> sizes = malloc(sizeof(int) * 16);
+    if (!data -> sizes) return MEMORY_ERROR;
     data -> table = malloc(sizeof(HashTable));
     if (!data -> table) return MEMORY_ERROR;
     return init_table(data -> table);
 }
 
-static int add_data(Data *data, int n){
+static int add_data(Data *data, int n, int size){
     (data -> allocs)[data -> alloc_num] = n;
+    (data -> sizes)[data -> alloc_num] = size;
     (data -> alloc_num)++;
     if (data -> alloc_num == data -> max_alloc_num){
         (data -> max_alloc_num) *= 2;
         data -> allocs = realloc(data -> allocs, data -> max_alloc_num);
         if (!data -> allocs) return MEMORY_ERROR;
+        data -> sizes = realloc(data -> sizes, data -> max_alloc_num);
+        if (!data -> sizes) return MEMORY_ERROR;
     }
     return NO_ERROR;
 }
@@ -94,19 +99,31 @@ static int init_line(Data *data, Atom *first){
     Atom *node = first;
     Atom *prev;
     if (node -> type == AT_EOL) return NO_ERROR;
-    int err;
+    int err, size;
+    char *str;
 
     if (node -> type == AT_DECLARE){
         node = node -> next;
         while (node -> type != AT_EOL){
             if (node -> type == AT_NAME){
-                err = insert_node(node -> str, HS_VAR,
+                str = node -> str;
+                if (node -> next -> type == AT_BEGIN){
+                    node = node -> next -> next;
+                    if (node -> type != AT_NUM || node -> next -> type != AT_END){
+                        return DECL_TYPE_ERROR;
+                    }
+                    size = node -> value;
+                    node = node -> next;
+                } else {
+                    size = 1;
+                }
+                err = insert_node(str, HS_VAR,
                                   aloc_int(data -> var_num),
                                   data -> table);
                 if (err){
                     return err;
                 }
-                err = add_data(data, data -> var_num);
+                err = add_data(data, data -> var_num, size);
                 if (err){
                     return err;
                 }

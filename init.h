@@ -45,7 +45,7 @@ typedef struct line {
 
 typedef struct init_data_struct {
     Line *first, *last;
-    int *allocs;
+    int *allocs, *sizes;
     int var_num, alloc_num, max_alloc_num;
     HashTable *table;
 } InitData;

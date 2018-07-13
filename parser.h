@@ -25,7 +25,7 @@ typedef struct p_function {
 
 typedef struct p_file {
     ParserFunction *first;
-    int *data;
+    int *data, *sizes;
     int data_size;
     char **strings;
     int *str_vals;

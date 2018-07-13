@@ -329,6 +329,7 @@ int parse_file(InitData *data, File *file){
         }
     }
     file -> data = data -> allocs;
+    file -> sizes = data -> sizes;
     file -> data_size = data -> alloc_num;
 
     return NO_ERROR;
