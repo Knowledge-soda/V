@@ -34,6 +34,9 @@
 #define BL_CALL (22)
 #define BL_PRNR (23)
 #define BL_IFEC (24)
+#define BL_AT   (25)
+#define BL_ATMV (26)
+#define BL_INDX (27)
 
 
 typedef struct line {

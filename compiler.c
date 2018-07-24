@@ -163,6 +163,19 @@ static int compile_built_in(int type, int node_size){
         printf("mov ebx, esp\n");
         printf("call dword eax\n");
         printf("add ebp, 12\n");
+    } else if (type == BL_AT){
+        printf("mov eax, [ebp - 4]\n");
+        printf("mov ecx, [ebp - 8]\n");
+        printf("lea eax, [eax + 4 * ecx]\n");
+    } else if (type == BL_ATMV){
+        printf("mov eax, [ebp - 4]\n");
+        printf("mov ecx, [ebp - 8]\n");
+        printf("mov edx, [ebp - 12]\n");
+        printf("mov dword [eax + 4 * ecx], edx\n");
+    } else if (type == BL_INDX){
+        printf("mov eax, [ebp - 4]\n");
+        printf("mov ecx, [ebp - 8]\n");
+        printf("mov eax, [eax + 4 * ecx]\n");
     } else {
         return UNDEF_ERROR;
     }
