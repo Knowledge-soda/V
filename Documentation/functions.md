@@ -22,5 +22,8 @@
 | `call` | function and its arguments | whatever function outputs | calls function with arguments |
 | `ifc` | condition, function and its arguments | | calls function if condition is true |
 | `ifec` | condition, 2 functions and their arguments | | calls first function if condition is true, second otherwise |
+| `@` | array and index | | pointer to nth item in array | |
+| `@=` | array, index and argument | array | changes nth item in array to argument |
+| `[]` | array and index | nth item in array | |
 | `jmp` | place | | [obsolete](obsolete.md) |
 | `ijmp` | condition and place | | [obsolete](obsolete.md) |

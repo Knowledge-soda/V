@@ -206,6 +206,25 @@ If there are no arguments ` := ` may be omitted.
 While this notation might seem similar to C-blocks it's different -
 **you can't reference outer arguments** within anonymous function.
 
+Arrays
+------
+
+Arrays are declared just like variables, except that they have their size in parenthesis specified:
+
+    :array(28), variable /* both array of size 28 and variable declared */
+
+Function `@` returns pointer to nth item in the array.
+Changing and getting the value of nth item can be done this way:
+
+    =(@(array, n), val) /* changes nth value to val */
+    v(@(array, n)) /* gets nth value */
+
+To simplify changing and getting values in array, functions `@=` and `[]` were added.
+Code above can be written a bit shorter, with less parenthesis and a lot clearer this way:
+
+    =@(array, n, val)
+    [](array, n)
+
 Hello world
 -----------
 

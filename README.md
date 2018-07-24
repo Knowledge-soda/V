@@ -15,7 +15,8 @@ To compile some program *name_of_program.v* type `./run.sh name_of_program`.
 
 V was tested on Linux. It should work on Windows but you need to change [the script](Documentation/script.md).
 
-If you want to try programming, follow the [Tutorial](Documentation/tutorial.md).
+If you want to try programming, follow the:
+### **[Tutorial](Documentation/tutorial.md)**
 
 Contributions and suggestions are welcome, although I probably won't update this programming language many times (feel free to take my place).
 
