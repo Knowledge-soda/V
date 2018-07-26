@@ -8,6 +8,7 @@
 int is_numeral(char c);
 int is_num(char *str);
 int str_num(char *str);
+int str_float(char *str);
 
 void del_nl(char *str);
 

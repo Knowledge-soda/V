@@ -1,3 +1,4 @@
+#include<stdlib.h>
 #include<stdio.h>
 #include<string.h>
 
@@ -6,24 +7,29 @@
 
 
 int is_numeral(char c){
-    return ('0' <= c && c <= '9') || c == ' ' || c == '-';
+    return ('0' <= c && c <= '9') || c == ' ' || c == '-' || c == '.';
 }
 
 int is_num(char *str){
-    int i, sign = 1;
-    char last;
+    int i, sign = 1, dec = 1;
+    char last, first = 0;
     for (i = 0;str[i];i++){
         if (!is_numeral(str[i])) return 0;
         if (!sign && str[i] == '-') return 0;
+        if (str[i] == '.'){
+            if (dec == 1) dec = 2;
+            else return 0;
+        }
         if (str[i] != ' '){
+            if (!first) first = str[i];
             sign = 0;
             last = str[i];
         }
     }
-    return last != '-';
+    return (last != '-' && (last != '.' || first != '.')) * dec;
 }
 
-int str_num(char *str){
+int str_int(char *str){
     int i, ret = 0, sign = 1;
     for (i = 0;str[i];i++){
         if (str[i] == ' ') continue;
@@ -35,6 +41,36 @@ int str_num(char *str){
         }
     }
     return ret * sign;
+}
+
+int str_float(char *str){
+    float ret = 0, decimal = 0.1, sign = 1;
+    int i;
+    for (i = 0;str[i] != '.';i++){
+        if (str[i] == ' ') continue;
+        if (str[i] == '-') sign = -1;
+        else {
+            ret *= 10;
+            ret += (float) (str[i] - '0');
+        }
+    }
+    for (;str[i];i++){
+        if (str[i] == ' ' || str[i] == '.') continue;
+        ret += ((float) (str[i] - '0')) * decimal;
+        decimal *= 0.1;
+    }
+    ret *= sign;
+    memcpy(&i, &ret, sizeof(float));
+    return i;
+}
+
+int str_num(char *str){
+    int t = is_num(str);
+    if (t == 1){
+        return str_int(str);
+    } else {
+        return str_float(str);
+    }
 }
 
 void del_nl(char *str){

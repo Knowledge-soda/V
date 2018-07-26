@@ -117,6 +117,45 @@ const char *built_in_name(int n){
     if (n == BL_IFEC){
         return "IFEC";
     }
+    if (n == BL_AT){
+        return "AT";
+    }
+    if (n == BL_ATMV){
+        return "ATMV";
+    }
+    if (n == BL_INDX){
+        return "INDX";
+    }
+    if (n == BL_PRNF){
+        return "PRNF";
+    }
+    if (n == BL_PRFR){
+        return "PRFR";
+    }
+    if (n == BL_FSUM){
+        return "FSUM";
+    }
+    if (n == BL_FMUL){
+        return "FMUL";
+    }
+    if (n == BL_FSUB){
+        return "FSUB";
+    }
+    if (n == BL_FDIV){
+        return "FDIV";
+    }
+    if (n == BL_LDF){
+        return "LDF";
+    }
+    if (n == BL_FEQU){
+        return "FEQU";
+    }
+    if (n == BL_FORE){
+        return "FORE";
+    }
+    if (n == BL_FESS){
+        return "FESS";
+    }
     return "UNDEFINED";
 }
 

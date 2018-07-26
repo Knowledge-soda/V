@@ -37,6 +37,16 @@
 #define BL_AT   (25)
 #define BL_ATMV (26)
 #define BL_INDX (27)
+#define BL_PRNF (28)
+#define BL_PRFR (29)
+#define BL_FSUM (30)
+#define BL_FMUL (31)
+#define BL_FSUB (32)
+#define BL_FDIV (33)
+#define BL_LDF  (34)
+#define BL_FEQU (35)
+#define BL_FORE (36)
+#define BL_FESS (37)
 
 
 typedef struct line {

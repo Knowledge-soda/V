@@ -41,6 +41,16 @@ static int init_built_in(HashTable *table){
     insert_node("@", HS_SPC, aloc_int(BL_AT), table);
     insert_node("@=", HS_SPC, aloc_int(BL_ATMV), table);
     insert_node("[]", HS_SPC, aloc_int(BL_INDX), table);
+    insert_node("printf", HS_SPC, aloc_int(BL_PRNF), table);
+    insert_node("printfr", HS_SPC, aloc_int(BL_PRFR), table);
+    insert_node("f+", HS_SPC, aloc_int(BL_FSUM), table);
+    insert_node("f*", HS_SPC, aloc_int(BL_FMUL), table);
+    insert_node("f-", HS_SPC, aloc_int(BL_FSUB), table);
+    insert_node("f/", HS_SPC, aloc_int(BL_FDIV), table);
+    insert_node("loadf", HS_SPC, aloc_int(BL_LDF), table);
+    insert_node("f==", HS_SPC, aloc_int(BL_FEQU), table);
+    insert_node("f>", HS_SPC, aloc_int(BL_FORE), table);
+    insert_node("f<", HS_SPC, aloc_int(BL_FESS), table);
 
     insert_node("_start", HS_VAR, aloc_int(-1), table);
     return NO_ERROR;

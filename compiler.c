@@ -52,14 +52,17 @@ static int compile_built_in(int type, int node_size){
         printf("mov dword ecx, [ebp - 4]\n");
         printf("mov [ecx], eax\n");
     } else if (type == BL_EQU){
+        printf("xor eax, eax\n");
         printf("mov ecx, [ebp - 8]\n");
         printf("cmp dword [ebp - 4], ecx\n");
         printf("sete al\n");
     } else if (type == BL_MORE){
+        printf("xor eax, eax\n");
         printf("mov ecx, [ebp - 8]\n");
         printf("cmp dword [ebp - 4], ecx\n");
         printf("setg al\n");
     } else if (type == BL_LESS){
+        printf("xor eax, eax\n");
         printf("mov ecx, [ebp - 8]\n");
         printf("cmp dword [ebp - 4], ecx\n");
         printf("setl al\n");
@@ -176,6 +179,72 @@ static int compile_built_in(int type, int node_size){
         printf("mov eax, [ebp - 4]\n");
         printf("mov ecx, [ebp - 8]\n");
         printf("mov eax, [eax + 4 * ecx]\n");
+    } else if (type == BL_PRNF){
+        printf("pusha\n");
+        printf("fld dword [ebp - 4]\n");
+        printf("sub esp, 8\n");
+        printf("fstp qword [esp]\n");
+        printf("push prFLOAT\n");
+        printf("call printf\n");
+        printf("add esp, 12\n");
+        printf("popa\n");
+    } else if (type == BL_PRFR){
+        printf("pusha\n");
+        printf("fld dword [ebp - 4]\n");
+        printf("sub esp, 8\n");
+        printf("fstp qword [esp]\n");
+        printf("push prFLOATR\n");
+        printf("call printf\n");
+        printf("add esp, 12\n");
+        printf("popa\n");
+    } else if (type == BL_FSUM){
+        printf("fld dword [ebp - 8]\n");
+        printf("fadd dword [ebp - 4]\n");
+        printf("fstp dword [ebp - 4]\n");
+        printf("mov eax, [ebp - 4]\n");
+    } else if (type == BL_FMUL){
+        printf("fld dword [ebp - 8]\n");
+        printf("fmul dword [ebp - 4]\n");
+        printf("fstp dword [ebp - 4]\n");
+        printf("mov eax, [ebp - 4]\n");
+    } else if (type == BL_FSUB){
+        printf("fld dword [ebp - 8]\n");
+        printf("fsubr dword [ebp - 4]\n");
+        printf("fst dword [ebp - 4]\n");
+        printf("mov eax, [ebp - 4]\n");
+    } else if (type == BL_FDIV){
+        printf("fld dword [ebp - 8]\n");
+        printf("fdivr dword [ebp - 4]\n");
+        printf("fst dword [ebp - 4]\n");
+        printf("mov eax, [ebp - 4]\n");
+    } else if (type == BL_LDF){
+        printf("pusha\n");
+        printf("push dword [ebp - 4]\n");
+        printf("push prFLOATR\n");
+        printf("call scanf\n");
+        printf("add esp, 8\n");
+        printf("popa\n");
+    } else if (type == BL_FEQU){
+        printf("fld dword [ebp - 8]\n");
+        printf("fcom dword [ebp - 4]\n");
+        printf("fstsw ax\n");
+        printf("sahf\n");
+        printf("mov eax, 0\n");
+        printf("sete al\n");
+    } else if (type == BL_FORE){
+        printf("fld dword [ebp - 8]\n");
+        printf("fcom dword [ebp - 4]\n");
+        printf("fstsw ax\n");
+        printf("sahf\n");
+        printf("mov eax, 0\n");
+        printf("setb al\n");
+    } else if (type == BL_FESS){
+        printf("fld dword [ebp - 8]\n");
+        printf("fcom dword [ebp - 4]\n");
+        printf("fstsw ax\n");
+        printf("sahf\n");
+        printf("mov eax, 0\n");
+        printf("seta al\n");
     } else {
         return UNDEF_ERROR;
     }
@@ -273,6 +342,8 @@ int compile_file(ParserFile *file){
     printf("prINTR db \"%%i\", 0\n");
     printf("scINT db \"%%i\", 0\n");
     printf("prSTR db '%%s', 0\n");
+    printf("prFLOAT db \"%%f\", 10, 0\n");
+    printf("prFLOATR db '%%f', 0\n");
     int i;
     for (i = 0;i < file -> str_size;i++){
         printf(";%i\n", (file -> str_vals)[i]);

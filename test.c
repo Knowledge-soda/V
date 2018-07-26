@@ -60,9 +60,16 @@ int main(int argc, char **argv){
 
     if (equal(argv[1], "str_num")){
         char line[MAXLINE];
+        int tmp, ans;
+        float pr;
         get_line(line, MAXLINE);
         del_nl(line);
-        if (is_num(line)){
+        tmp = is_num(line);
+        if (tmp == 2){
+            ans = str_num(line);
+            memcpy(&pr, &ans, sizeof(float));
+            printf("%.4f\n", pr);
+        } else if (tmp == 1){
             printf("%i\n", str_num(line));
         } else {
             printf("Not a number!\n");
