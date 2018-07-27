@@ -225,6 +225,19 @@ Code above can be written a bit shorter, with less parenthesis and a lot clearer
     =@(array, n, val)
     [](array, n)
 
+Floats
+------
+
+Computations with floats are similar to computations with integers, the difference is that every float function has prefix `f`.
+
+    fprint(f+(1.3, 1.8))
+
+Notice that numbers without dot always represent integers and if used in float functions will cause problems.
+
+To convert float to int use function `int`. To convert int to float use `float`.
+
+Note that some functions for variable management work for both integers and floats.
+
 Hello world
 -----------
 

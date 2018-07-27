@@ -25,5 +25,16 @@
 | `@` | array and index | | pointer to nth item in array | |
 | `@=` | array, index and argument | array | changes nth item in array to argument |
 | `[]` | array and index | nth item in array | |
+| `f+` | 2 floats | sum | |
+| `f-` | 2 floats | difference | |
+| `f*` | 2 floats | factor | |
+| `f/` | 2 floats | fraction | |
+| `fprint` | 1 float | | prints argument |
+| `fprintr` | 1 float | | prints argument without newline |
+| `f==` | 2 floats | 1 if they are same, 0 otherwise | floats are rarely really same |
+| `f<` | 2 floats | 1 if first is smaller than second, 0 otherwise | |
+| `f>` | 2 floats | 1 if first is bigger than second, 0 otherwise | |
+| `int` | 1 float | integer | |
+| `float` | 1 integer | float | |
 | `jmp` | place | | [obsolete](obsolete.md) |
 | `ijmp` | condition and place | | [obsolete](obsolete.md) |
