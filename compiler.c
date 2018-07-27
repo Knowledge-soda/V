@@ -245,6 +245,14 @@ static int compile_built_in(int type, int node_size){
         printf("sahf\n");
         printf("mov eax, 0\n");
         printf("seta al\n");
+    } else if (type == BL_ITF){
+        printf("fild dword [ebp - 4]\n");
+        printf("fstp dword [ebp - 4]\n");
+        printf("mov eax, [ebp - 4]\n");
+    } else if (type == BL_FTI){
+        printf("fld dword [ebp - 4]\n");
+        printf("fistp dword [ebp - 4]\n");
+        printf("mov eax, [ebp - 4]\n");
     } else {
         return UNDEF_ERROR;
     }

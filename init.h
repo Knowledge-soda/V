@@ -47,6 +47,8 @@
 #define BL_FEQU (35)
 #define BL_FORE (36)
 #define BL_FESS (37)
+#define BL_FTI  (38)
+#define BL_ITF  (39)
 
 
 typedef struct line {

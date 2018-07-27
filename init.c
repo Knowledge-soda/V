@@ -51,6 +51,8 @@ static int init_built_in(HashTable *table){
     insert_node("f==", HS_SPC, aloc_int(BL_FEQU), table);
     insert_node("f>", HS_SPC, aloc_int(BL_FORE), table);
     insert_node("f<", HS_SPC, aloc_int(BL_FESS), table);
+    insert_node("int", HS_SPC, aloc_int(BL_ITF), table);
+    insert_node("float", HS_SPC, aloc_int(BL_FTI), table);
 
     insert_node("_start", HS_VAR, aloc_int(-1), table);
     return NO_ERROR;
