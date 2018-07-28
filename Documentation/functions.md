@@ -12,7 +12,7 @@
 | `load` | variable | | stores number from stdin to variable |
 | `=` | variable and value | value | stores value in variable |
 | `v` | variable | value of variable | |
-| `if` | condition and 2 arguments | first arguments if condition is true, second otherwise | |
+| `?` | condition and 2 arguments | first arguments if condition is true, second otherwise | |
 | `==` | 2 arguments | 1 if they are same, 0 otherwise | |
 | `<` | 2 arguments | 1 if first is smaller than second, 0 otherwise | |
 | `>` | 2 arguments | 1 if first is bigger than second, 0 otherwise | |
@@ -20,8 +20,8 @@
 | `or` | 2 condition | disjunction | |
 | `not` | 1 condition | negation | |
 | `call` | function and its arguments | whatever function outputs | calls function with arguments |
-| `ifc` | condition, function and its arguments | | calls function if condition is true |
-| `ifec` | condition, 2 functions and their arguments | | calls first function if condition is true, second otherwise |
+| `if` | condition, function and its arguments | | calls function if condition is true |
+| `if-else` | condition, 2 functions and their arguments | | calls first function if condition is true, second otherwise |
 | `@` | array and index | | pointer to nth item in array | |
 | `@=` | array, index and argument | array | changes nth item in array to argument |
 | `[]` | array and index | nth item in array | |

@@ -141,17 +141,17 @@ It also supports some logical functions: `and`, `or` and `not`.
     print(not(>(8, 1))) /* prints 0 */
     print(and(2, 5)) /* print 1 because both are nonzero */
 
-There is a function `if` which requires 3 arguments.
+There is a function `?` which requires 3 arguments.
 If first one is true (nonzero) it returns third argument else it returns third.
 
-    abs(x) := if(<(x, 0), -(0, x), x)
+    abs(x) := ?(<(x, 0), -(0, x), x)
 
-Note that `if` isn't short-circuited - all 3 arguments will be evaluated.
+Note that `?` isn't short-circuited - all 3 arguments will be evaluated.
 
-    print(if(==(b, 0), 0, /(10, b))) /* still crashes when b is 0 */
-    print(if(==(b, 0), 0, /(10, if(b, b, 0)))) /* works */
+    print(?(==(b, 0), 0, /(10, b))) /* still crashes when b is 0 */
+    print(?(==(b, 0), 0, /(10, ?(b, b, 0)))) /* works */
 
-This means that you can't use `if` to terminate recursion.
+This means that you can't use `?` to terminate recursion.
 
 There are 2 solutions for that. First one is functions `ijmp` and `jmp` but their use is deprecated.
 
@@ -165,40 +165,40 @@ We can finally define our favourite factorial function:
 
     term() := id(1)
     !(n) := *(n, call(
-        if(<(n, 2), term, !),
+        ?(<(n, 2), term, !),
         -(n, 1)))
 
-There is a function which combines `call` and `if` - `ifc`.
-It is a bit different though. First argument is conditional (like in `if`).
+There is a function which combines `call` and `?` - `if`.
+It is a bit different though. First argument is conditional (like in `?`).
 Second is function (like in `call`). Other arguments are passed to that function.
-Notice that there is no else here. If conditional is false (0), `ifc` won't change value of temporary value.
+Notice that there is no else here. If conditional is false (0), `if` won't change value of temporary value.
 That means that last argument passed is *returned*.
 
 Now when we know all this we can define out function even more easily:
 
-    !(n) := *(n, ifc(>(n, 1), /* if n > 1: */
+    !(n) := *(n, if(>(n, 1), /* if n > 1: */
         !, -(n, 1), /* call ! with arguments n - 1 */
     1)) /* else return 1 */
 
-Function `ifec` is a combination of `if` and `call`.
+Function `if-else` is a combination of `?` and `call`.
 
 Anonymous functions
 -------------------
 
-After using `ifc` and `ifec` a lot, defining new function every time becomes a annoying.
+After using `if` and `if-else` a lot, defining new function every time becomes a annoying.
 There is a solution for that: anonymous functions (also called lambda functions).
 
 To define a lambda function use curly brackets (`{` & `}`).
 Function arguments go before ` := ` and function body comes after.
 If there are no arguments ` := ` may be omitted.
 
-    gcd(a, b) := ifc(b, /* if b isn't zero */
+    gcd(a, b) := if(b, /* if b isn't zero */
         {a, b := gcd(b, %(a, b))}, /* call gcd */
         a, b, /* with arguments a and b */
         a) /* otherwise return a */
 
 
-    sum() := ifc(v(load(ans)), /* if loaded number is not zero */
+    sum() := if(v(load(ans)), /* if loaded number is not zero */
         {+(v(ans), sum())}, /* add it to a sum */
         0) /* else return 0
         This will return sum of zero terminated number sequence */

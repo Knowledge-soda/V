@@ -23,7 +23,7 @@ static int init_built_in(HashTable *table){
     insert_node("==", HS_SPC, aloc_int(BL_EQU), table);
     insert_node(">", HS_SPC, aloc_int(BL_MORE), table);
     insert_node("<", HS_SPC, aloc_int(BL_LESS), table);
-    insert_node("if", HS_SPC, aloc_int(BL_IF), table);
+    insert_node("?", HS_SPC, aloc_int(BL_IF), table);
     insert_node("ijmp", HS_SPC, aloc_int(BL_IJMP), table);
     insert_node("print", HS_SPC, aloc_int(BL_PRNT), table);
     insert_node("load", HS_SPC, aloc_int(BL_LOAD), table);
@@ -34,10 +34,10 @@ static int init_built_in(HashTable *table){
     insert_node("/", HS_SPC, aloc_int(BL_DIV), table);
     insert_node("%", HS_SPC, aloc_int(BL_MOD), table);
     insert_node("jmp", HS_SPC, aloc_int(BL_JMP), table);
-    insert_node("ifc", HS_SPC, aloc_int(BL_IFC), table);
+    insert_node("if", HS_SPC, aloc_int(BL_IFC), table);
     insert_node("call", HS_SPC, aloc_int(BL_CALL), table);
     insert_node("printr", HS_SPC, aloc_int(BL_PRNR), table);
-    insert_node("ifec", HS_SPC, aloc_int(BL_IFEC), table);
+    insert_node("if-else", HS_SPC, aloc_int(BL_IFEC), table);
     insert_node("@", HS_SPC, aloc_int(BL_AT), table);
     insert_node("@=", HS_SPC, aloc_int(BL_ATMV), table);
     insert_node("[]", HS_SPC, aloc_int(BL_INDX), table);
