@@ -3,6 +3,8 @@ main: main.o $(ALL_OBJS) compiler.o
 	$(CC) -Wall -o main main.o $(ALL_OBJS) compiler.o
 test: test.o $(ALL_OBJS)
 	$(CC) -Wall -o test test.o $(ALL_OBJS)
+preprocessor: preprocessor.c hashtable.c
+	$(CC) -Wall -o preprocessor preprocessor.c
 %.o: %.c %.h misc.h tools.h
 	$(CC) -Wall -c -o $@ $<
 %.out: %
