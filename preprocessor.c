@@ -2,8 +2,11 @@
 #include<string.h>
 
 #include"hashtable.h"
+#include"tools.h"
 
 #define MAXLINE (2000)
+
+int parse_file(char *filename);
 
 static int is_def(char *str){
     return (str[0] == ' ' && str[1] == ':' &&
@@ -20,20 +23,6 @@ static int is_key(char *str){
             is_dec(str) || is_def(str));
 }
 
-int equal(char *a, char *b){
-    int i;
-    for (i = 0;a[i];i++)
-        if (a[i] != b[i])
-            return 0;
-    return !b[i];
-}
-
-void del_nl(char *str){
-    int i = strlen(str) - 1;
-    if (str[i] == '\n')
-        str[i] = '\0';
-}
-
 void basename(char *path, char *base){
     int i, last = 0;
     for (i = 0;path[i];i++){
@@ -47,6 +36,57 @@ void basename(char *path, char *base){
     base[i] = '\0';
 }
 
+char *read_word(char *line, char *name){
+    int i, j = 0, trn = 0, comm = 0;
+    for (i = 0;!trn || line[i] != ' ';i++){
+        if (line[i] == '/' && line[i + 1] == '*') comm++;
+        if (line[i] == '/' && line[i - 1] == '/') comm--;
+        else if (!comm){
+            if (trn || line[i] != ' '){
+                trn = 1;
+                name[j] = line[i];
+                j++;
+            }
+        }
+    }
+    name[j] = '\0';
+    return line + i;
+}
+
+char *read_str(char *line, char *name){
+    int i, j = 0, comm = 0, qt = 0;
+    for (i = 0;qt < 2;i++){
+        if (line[i] == '\n') break;
+        if (line[i] == '/' && line[i + 1] == '*') comm++;
+        if (line[i] == '/' && line[i - 1] == '/') comm--;
+        else if (!comm){
+            if (line[i] == '"') qt++;
+            else if (qt == 1){
+                name[j] = line[i];
+                j++;
+            }
+        }
+    }
+    name[j] = '\0';
+    return line + i + 1;
+}
+
+int prep_line(char *line, char *tmp_filename){
+    int err;
+    char name[200];
+    line = read_word(line + 3, name);
+    if (equal(name, "include")){
+        char *file_name = tmp_filename + strlen(tmp_filename);
+        line = read_str(line, file_name);
+        while (*file_name){
+            err = parse_file(tmp_filename);
+            if (err) return err;
+            line = read_str(line, file_name);
+        }
+    }
+    return 0;
+}
+
 int parse_file(char *filename){
     FILE *file;
     file = fopen(filename, "r");
@@ -57,25 +97,24 @@ int parse_file(char *filename){
     char line[MAXLINE];
     char tmp_filename[200];
     basename(filename, tmp_filename);
-    char name[50];
-    int err, i, j = 0, comm = 0;
+    char name[200];
+    int err, i, j, comm = 0;
     while (fgets(line, MAXLINE, file)){
-        del_nl(line);
-        if (line[0] == '-' && line[1] == '-' && line[2] == ' '){
-            for (i = 3;line[i] != ' ';i++){
-                if (line[i] == '/' && line[i + 1] == '*') comm++;
-                name[j] = line[i];
-                j++;
-            }
-            name[j] = '\0';
-            if (equal(name, "include")){
-                strcat(tmp_filename, line + i + 1);
-                err = parse_file(tmp_filename);
-                if (err) return err;
-                basename(filename, tmp_filename);
-            }
+        if (!comm && line[0] == '-' && line[1] == '-' && line[2] == ' '){
+            err = prep_line(line, tmp_filename);
+            if (err) return err;
         } else {
-            puts(line);
+            /*
+            j = 0;
+            for (i = 0;line[i];i++){
+                if (line[i] == '/' && line[i + 1] == '*') comm++;
+                if (line[i] == '*' && line[i + 1] == '/') comm--;
+                if (!comm){
+                    name[j] = line[i];
+                    j++;
+                }
+            } */
+            printf("%s", line);
         }
     }
     return 0;
