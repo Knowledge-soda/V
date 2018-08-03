@@ -14,7 +14,7 @@ else
     OPTS="-gtatc"
 fi
 
-if [[ $OPTS == *g* ]] ; then ./main < $NAME.v > $NAME.asm
+if [[ $OPTS == *g* ]] ; then ./preprocessor $NAME.v | ./main > $NAME.asm
 fi
 if [[ $OPTS == *a* ]] ; then nasm -Fdwarf -felf32 -o $NAME.o $NAME.asm
 fi

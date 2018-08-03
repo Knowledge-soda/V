@@ -1,3 +1,5 @@
+-- define "ABND" "a, b, n := "
+-- define "ABN" "a, b, n"
 :ans, v2
 info() := id(
     "What do you want to calculate?\n"
@@ -11,11 +13,11 @@ info()
 load(ans)
 if(invalid(ans), repeat)
 
-fib'(a, b, n) := if-else(n, {a, b, n := 
+fib'(ABN) := if-else(n, {ABND
         fib'(b, +(a, b), -(n, 1))
-    }, {a, b, n := 
+    }, {ABND
         +(a, b)
-    }, a, b, n)
+    }, ABN)
 fib(n) := if(>(n, 2), fib', 1, 1, -(n, 3), 1)
 
 sum() := if(v(load(ans)), {+(v(ans), sum())}, 0)
