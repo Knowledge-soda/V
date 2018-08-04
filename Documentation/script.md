@@ -32,4 +32,6 @@ Assembling is done with NASM assembler. Format used if *elf32*. There are some d
 
 GCC link object file. Notice that *-m32* flag is required.
 
+In newest version (1.3) *preprocessor* is added. Now, file is first given to *preprocessor* which then pipes output to *main*. You might have to change some things in preprocessor source code if you want to use it on Windows (it uses `/` for directory separator which might cause errors).
+
 To use V with Windows, you should probably use different format for assembler and different compiler. If you want to use script, you will probably have to rewrite it in Windows scripting language.

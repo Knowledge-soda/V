@@ -253,6 +253,31 @@ Printing text changes both temporary values to length of text.
 
 Function `printr` behaves exactly like `print` but it doesn't use newline so it is useful for combining it with string printing.
 
+Preprocessor
+------------
+
+There are two preprocessor commands in V: include and define.
+
+    -- include "file1.v" "file2.v" "directory/file3.v"
+    -- define "ARGS" "a, b, n"
+
+Note that there has to space after "--".
+
+Include command includes (copies) all files given. Note that files are always relative to current file:
+
+    /* main.v */
+    -- include "dir/name.v"
+
+    /* name.v */
+    -- include "help.v"
+    /* will include dir/help.v */
+
+Define command takes two strings. Every time first string is found (after that command) it will be replaced with second.
+It must be between separators (`(`, `)`, `,`, `{`, `}`, `"`, `: `, ` := ` and newline).
+
+    -- define "abc" "a, b, c"
+    fun(abc) := +(abc, /* abc will be replaced with a, b, c"
+        abcde) /* abcde will still be abcde */
 
 Is that all? Well, pretty much it is. You can look into [function list](functions.md) or [deprecated features](obsolete.md) if you are eager.
 You can also try to code something in V or just take a look at examples and test (real tests are in *tests/progs/* directory).
